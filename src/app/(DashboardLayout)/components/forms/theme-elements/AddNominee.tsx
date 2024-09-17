@@ -57,7 +57,7 @@ const AddNomineeForm = () => {
         title: "",
       });
     } catch (error) {
-      setSubmitError(data.message);
+      setSubmitError("Error submiting");
     } finally {
       setIsSubmitting(false);
     }

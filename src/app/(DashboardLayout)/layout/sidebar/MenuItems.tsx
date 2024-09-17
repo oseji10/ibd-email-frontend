@@ -3,7 +3,9 @@ import {
   IconCopy,
   IconLayoutDashboard,
   IconLogin,
+  IconMessage,
   IconMoodHappy,
+  IconNotification,
   IconTypography,
   IconUserPlus,
 } from "@tabler/icons-react";
@@ -58,17 +60,17 @@ const Menuitems = [
   //   navlabel: true,
   //   subheader: "Extra",
   // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Icons",
-  //   icon: IconMoodHappy,
-  //   href: "/icons",
-  // },
   {
     id: uniqueId(),
     title: "Nominees",
-    icon: IconAperture,
+    icon: IconNotification,
     href: "/nominees/nominees",
+  },
+  {
+    id: uniqueId(),
+    title: "Marketers",
+    icon: IconMoodHappy,
+    href: "/marketers/marketers",
   },
 ];
 

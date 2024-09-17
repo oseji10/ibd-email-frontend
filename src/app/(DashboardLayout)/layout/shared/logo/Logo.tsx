@@ -9,13 +9,13 @@ const LinkStyled = styled(Link)(() => ({
   display: "block",
 }));
 
-const Logo = () => {
+const Logo2 = () => {
   return (
     <LinkStyled href="/">
-      <Image src="/images/logos/dark-logo.svg" alt="logo" height={70} width={174} priority />
+      <Image src="https://app.ibd.ng/images/ibd-logo.png" alt="logo" height={50} width={100} priority />
     </LinkStyled>
   );
 };
 
-export default Logo;
+export default Logo2;
   

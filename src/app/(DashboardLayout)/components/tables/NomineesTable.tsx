@@ -10,6 +10,7 @@ interface Nominee {
   address: string;
   nomination_date: string | null;
   title: string | null;
+  status: string | null;
 }
 
 const NomineesTable = () => {
@@ -17,7 +18,7 @@ const NomineesTable = () => {
   const [filteredNominees, setFilteredNominees] = useState<Nominee[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(5); // Set how many records you want per page
+  const [recordsPerPage] = useState(10); // Set how many records you want per page
 
   // Fetch nominees from the API
   useEffect(() => {
@@ -28,6 +29,7 @@ const NomineesTable = () => {
        
         const data = await response.json();
         // Access the nominees array within the API response
+        console.log(data.nominees)
         setNominees(data.nominees);
         setFilteredNominees(data.nominees);
       } catch (error) {
@@ -43,7 +45,8 @@ const NomineesTable = () => {
     const filtered = nominees.filter((nominee) =>
       nominee.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       nominee.othernames?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      nominee.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      nominee.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      nominee.status?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredNominees(filtered);
     setCurrentPage(1); // Reset to the first page when searching
@@ -87,7 +90,7 @@ const NomineesTable = () => {
       <table border="1" width="100%" cellPadding="10">
         <thead>
           <tr>
-            <th>ID</th>
+            {/* <th>ID</th> */}
             <th>Name</th>
             {/* <th>Other Names</th> */}
             <th>Email</th>
@@ -102,20 +105,20 @@ const NomineesTable = () => {
           {currentRecords.length > 0 ? (
             currentRecords.map((nominee) => (
               <tr key={nominee.id}>
-                <td>{nominee.id}</td>
+                {/* <td>{nominee.id}</td> */}
                 {/* <td>{nominee.title || "N/A"}</td> */}
-                <td>{nominee.title || "N/A"} {nominee.first_name} {nominee.othernames}</td>
-                <td>{nominee.email}</td>
-                <td>{nominee.phone_number}</td>
-                <td>{nominee.address}</td>
+                <td>{nominee.title || "N/A"} {nominee.first_name } {nominee.othernames}</td>
+                <td>{nominee.email || "N/A"}</td>
+                <td>{nominee.phone_number || "N/A"}</td>
+                <td>{nominee.address || "N/A" || "N/A"}</td>
                 <td>{nominee.nomination_date || "N/A"}</td>
-                <td></td>
+                <td>{nominee.status || "N/A"}</td>
                 <td></td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={8}>No nominees found</td>
+              <td colSpan={6}>No nominees found</td>
             </tr>
           )}
         </tbody>
