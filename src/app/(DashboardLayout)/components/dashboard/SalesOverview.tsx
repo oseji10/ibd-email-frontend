@@ -91,7 +91,7 @@ const SalesOverview = () => {
 
     return (
 
-        <DashboardCard title="Sales Overview" action={
+        <DashboardCard title="Nominations Statistics" action={
             <Select
                 labelId="month-dd"
                 id="month-dd"
@@ -99,9 +99,9 @@ const SalesOverview = () => {
                 size="small"
                 onChange={handleChange}
             >
-                <MenuItem value={1}>March 2023</MenuItem>
-                <MenuItem value={2}>April 2023</MenuItem>
-                <MenuItem value={3}>May 2023</MenuItem>
+                <MenuItem value={1}>August 2024</MenuItem>
+                <MenuItem value={2}>September 2024</MenuItem>
+                <MenuItem value={3}>October 2024</MenuItem>
             </Select>
         }>
             <Chart

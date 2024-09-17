@@ -6,9 +6,11 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    Chip
+    Chip,
+    Button
 } from '@mui/material';
 import DashboardCard from '@/app/(DashboardLayout)//components/shared/DashboardCard';
+import { useEffect, useState } from "react";
 
 const products = [
     {
@@ -50,10 +52,40 @@ const products = [
 ];
 
 
-const ProductPerformance = () => {
+const Nominees = () => {
+    const [nominees, setNominees] = useState<Nominee[]>([]);
+    const [filteredNominees, setFilteredNominees] = useState<Nominee[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(10); // Set how many records you want per page
+  
+
+  // Fetch nominees from the API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const response = await fetch("/api/nominees");
+        const response = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/nominees/all-nominees`);
+       
+        const data = await response.json();
+        // Access the nominees array within the API response
+        console.log(data.nominees)
+        setNominees(data.nominees);
+        setFilteredNominees(data.nominees);
+      } catch (error) {
+        console.error("Error fetching nominees:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
     return (
 
-        <DashboardCard title="Product Performance">
+        <DashboardCard title="Nominees List">
+                    <Button variant="contained" href="/nominees/add-nominee"   disableElevation color="primary" >
+                                Nominate
+                              </Button>
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
                     aria-label="simple table"
@@ -62,6 +94,7 @@ const ProductPerformance = () => {
                         mt: 2
                     }}
                 >
+
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -71,29 +104,29 @@ const ProductPerformance = () => {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Assigned
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="subtitle2" fontWeight={600}>
                                     Name
                                 </Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Priority
+                                    Phone Number
+                                </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="subtitle2" fontWeight={600}>
+                                    Status
                                 </Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Budget
+                                    Date Nominated
                                 </Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((product) => (
-                            <TableRow key={product.name}>
+                        {nominees.map((nominee) => (
+                            <TableRow key={nominee.id}>
                                 <TableCell>
                                     <Typography
                                         sx={{
@@ -101,7 +134,7 @@ const ProductPerformance = () => {
                                             fontWeight: "500",
                                         }}
                                     >
-                                        {product.id}
+                                        {nominee.id}
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
@@ -113,7 +146,7 @@ const ProductPerformance = () => {
                                     >
                                         <Box>
                                             <Typography variant="subtitle2" fontWeight={600}>
-                                                {product.name}
+                                            {nominee?.title} {nominee?.first_name} {nominee?.othernames}
                                             </Typography>
                                             <Typography
                                                 color="textSecondary"
@@ -121,29 +154,42 @@ const ProductPerformance = () => {
                                                     fontSize: "13px",
                                                 }}
                                             >
-                                                {product.post}
+                                                {nominee?.email}
                                             </Typography>
                                         </Box>
                                     </Box>
                                 </TableCell>
                                 <TableCell>
                                     <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                        {product.pname}
+                                        {nominee?.phone_number}
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Chip
-                                        sx={{
-                                            px: "4px",
-                                            backgroundColor: product.pbg,
-                                            color: "#fff",
-                                        }}
-                                        size="small"
-                                        label={product.priority}
-                                    ></Chip>
-                                </TableCell>
+    <Chip
+        sx={{
+            px: "4px",
+            backgroundColor:
+                nominee.status === "nominated"
+                    ? "error.main"
+                    : nominee.status === "accepted"
+                    ? "primary.main"
+                    : nominee.status === "inducted"
+                    ? "success.main"
+                    : nominee.status === "responded"
+                    ? "secondary.main"
+                    : !nominee.status
+                    ? "secondary.main"
+                    : "secondary.main", // Default color for other statuses
+            color: "#fff",
+        }}
+        size="small"
+        label={nominee?.status || "N/A"}
+    />
+</TableCell>
+
+
                                 <TableCell align="right">
-                                    <Typography variant="h6">${product.budget}k</Typography>
+                                    <Typography variant="h6">{nominee?.nomination_date}</Typography>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -154,4 +200,4 @@ const ProductPerformance = () => {
     );
 };
 
-export default ProductPerformance;
+export default Nominees;

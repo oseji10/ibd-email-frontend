@@ -103,7 +103,7 @@ const AddNomineeForm = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            required
+            // required
           />
         </Box>
 
@@ -130,7 +130,8 @@ const AddNomineeForm = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            required
+            // required
+            type="number"
           />
         </Box>
 
@@ -143,7 +144,7 @@ const AddNomineeForm = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            required
+            // required
           />
         </Box>
 
