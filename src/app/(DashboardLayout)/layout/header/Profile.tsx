@@ -13,13 +13,61 @@ import {
 
 import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
 
+import axios from 'axios';
+import Cookies from 'js-cookie'; // if you're storing the token in cookies
+import { useRouter } from 'next/navigation'; // for navigation
+
+
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const router = useRouter();  // Initialize useRouter at the top level
+
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
   };
+  
   const handleClose2 = () => {
     setAnchorEl2(null);
+  };
+
+  const logout = async () => {
+    try {
+      // Send a logout request to the API
+      const token = Cookies.get('token'); // if token is stored in cookies
+      // Or if using localStorage
+      // const token = localStorage.getItem('token');
+
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/logout`,
+        {}, // no data required
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in Authorization header
+          },
+        }
+      );
+
+      // Clear token from cookies or local storage
+      Cookies.remove('token');
+      // Or if using localStorage
+      // localStorage.removeItem('token');
+
+      // Redirect to login page
+      router.push('/'); // Redirect to login or any other page
+
+      console.log('Logged out successfully');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Call your logout function here
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -83,11 +131,10 @@ const Profile = () => {
         </MenuItem>
         <Box mt={1} py={1} px={2}>
           <Button
-            href="/authentication/login"
             variant="outlined"
             color="primary"
-            component={Link}
             fullWidth
+            onClick={handleLogout}
           >
             Logout
           </Button>

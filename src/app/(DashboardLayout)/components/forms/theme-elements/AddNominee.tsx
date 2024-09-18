@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import CustomTextField from "./CustomTextField";
+import Cookies from 'js-cookie';
 
 const AddNomineeForm = () => {
   // State for nominee form data
@@ -17,6 +18,7 @@ const AddNomineeForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const token = Cookies.get('token'); // Retrieve the token from cookies
 
   // Handle form data changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +36,13 @@ const AddNomineeForm = () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/nominees/add-nominee`, {
         method: "POST",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
         headers: {
-          "Content-Type": "application/json",
-        },
+          'Authorization': `Bearer ${token}`, // Add token to the request header
+          'Content-Type': 'application/json',
+      },
         body: JSON.stringify(formData),
       });
 
